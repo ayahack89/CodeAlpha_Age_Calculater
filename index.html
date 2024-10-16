@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="Age Calculator, Enter your date of birth and calculate your age">
+     <title>Age Calculator</title>
+</head>
+
+<style>
+     :root {
+          --body-background: #18181b;
+          --form-background: #3f3f46;
+          --input-background: #f5f5f5;
+          --input-text-color: #000;
+          --input-border-color: #ddd;
+          --form-title-color: #ffffff;
+     }
+
+     * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+     }
+
+     body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: white;
+          background-color: var(--body-background);
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+     }
+
+     #main {
+          width: 100%;
+          max-width: 400px;
+          padding: 0 20px;
+     }
+
+     #form {
+          padding: 20px;
+          background-color: var(--form-background);
+          border: none;
+          border-radius: 20px;
+          box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+     }
+
+     #form-title {
+          text-align: center;
+          font-size: 24px;
+          margin-bottom: 20px;
+          color: var(--form-title-color);
+     }
+
+     .select-wrapper {
+          margin-bottom: 15px;
+     }
+
+     select {
+          width: 100%;
+          padding: 10px;
+          border-radius: 8px;
+          background-color: var(--input-background);
+          color: var(--input-text-color);
+          border: 1px solid var(--input-border-color);
+          font-size: 16px;
+          cursor: pointer;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          transition: all 0.3s ease;
+     }
+
+     select:focus {
+          border-color: #007bff;
+          outline: none;
+     }
+
+     input[type="number"] {
+          width: 100%;
+          padding: 10px;
+          border-radius: 8px;
+          background-color: var(--input-background);
+          color: var(--input-text-color);
+          border: 1px solid var(--input-border-color);
+          font-size: 16px;
+          cursor: pointer;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          transition: all 0.3s ease;
+     }
+
+     #result {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100px;
+          margin-top: 20px;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          background-color: #f9f9f9;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s ease;
+     }
+
+     #result:hover {
+          background-color: #e3e3e3;
+     }
+
+     #dob {
+          font-size: 1.5rem;
+          color: #333;
+          font-weight: bold;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     }
+
+
+     @media screen and (max-width: 768px) {
+          #main {
+               width: 90%;
+          }
+     }
+
+     @media screen and (max-width: 480px) {
+          #form {
+               padding: 15px;
+          }
+
+          #form-title {
+               font-size: 20px;
+          }
+
+          select {
+               font-size: 14px;
+               padding: 8px;
+          }
+     }
+
+     @media (max-width: 768px) {
+          #dob {
+               font-size: 1.2rem;
+          }
+
+          #result {
+               height: 80px;
+               padding: 8px;
+          }
+     }
+</style>
+
+<body>
+     <div id="main">
+          <form id="form">
+               <h2 id="form-title">Age Calculator</h2>
+
+               <div class="select-wrapper">
+                    <label for="months">
+                         <select id="months">
+                              <option value="1">January</option>
+                              <option value="2">February</option>
+                              <option value="3" selected>March</option>
+                              <option value="4">April</option>
+                              <option value="5">May</option>
+                              <option value="6">June</option>
+                              <option value="7">July</option>
+                              <option value="8">August</option>
+                              <option value="9">September</option>
+                              <option value="10">October</option>
+                              <option value="11">November</option>
+                              <option value="12">December</option>
+                         </select>
+                    </label>
+               </div>
+
+               <div class="select-wrapper">
+                    <label for="date">
+                         <select id="date">
+                              <option value="null" selected>8</option>
+                         </select>
+                    </label>
+               </div>
+
+               <div class="select-wrapper">
+                    <label for="year">
+                         <input type="number" id="years" value="2004">
+                    </label>
+               </div>
+          </form>
+          <div id="result">
+               <strong id="dob"></strong>
+          </div>
+     </div>
+
+     <script>
+          const dateSelect = document.getElementById('date');
+          const monthsSelect = document.getElementById('months');
+          const yearInput = document.getElementById('years');
+          const yourBirth = document.getElementById('dob');
+
+          function isLeapYear(year) {
+               return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+          }
+
+          function updateDays() {
+               const month = parseInt(monthsSelect.value);
+               const year = parseInt(yearInput.value);
+               let daysInMonth;
+
+               switch (month) {
+                    case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                         daysInMonth = 31;
+                         break;
+                    case 4: case 6: case 9: case 11:
+                         daysInMonth = 30;
+                         break;
+                    case 2:
+                         daysInMonth = isLeapYear(year) ? 29 : 28;
+                         break;
+                    default:
+                         daysInMonth = 31;
+               }
+
+               dateSelect.innerHTML = '';
+               for (let i = 1; i <= daysInMonth; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    dateSelect.appendChild(option);
+               }
+          }
+
+          function calculateAge(birthDate) {
+               const today = new Date();
+               const birthDateObj = new Date(birthDate);
+               let age = today.getFullYear() - birthDateObj.getFullYear();
+               const monthDiff = today.getMonth() - birthDateObj.getMonth();
+
+               
+               if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+                    age--;
+               }
+
+               return age;
+          }
+
+          function displayDOB() {
+               const date = dateSelect.value;
+               const month = monthsSelect.value;
+               const year = yearInput.value;
+
+               if (date && month && year) {
+                    const birthDate = `${year}-${month}-${date}`; // Format: YYYY-MM-DD
+                    const age = calculateAge(birthDate);
+
+                    yourBirth.innerHTML = `<i>Your date of birth: ${date}.${month}.${year} <br/> Your age: ${age} years</i>`;
+               } else {
+                    yourBirth.innerHTML = "Please select a complete date";
+               }
+          }
+
+          monthsSelect.addEventListener('change', () => {
+               updateDays();
+               displayDOB();
+          });
+
+          yearInput.addEventListener('input', () => {
+               updateDays();
+               displayDOB();
+          });
+
+          dateSelect.addEventListener('change', displayDOB);
+
+
+     </script>
+
+
+</body>
+
+</html>
