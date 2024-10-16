@@ -236,7 +236,7 @@
                let age = today.getFullYear() - birthDateObj.getFullYear();
                const monthDiff = today.getMonth() - birthDateObj.getMonth();
 
-               
+
                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
                     age--;
                }
@@ -249,14 +249,21 @@
                const month = monthsSelect.value;
                const year = yearInput.value;
 
-               if (date && month && year) {
-                    const birthDate = `${year}-${month}-${date}`; // Format: YYYY-MM-DD
-                    const age = calculateAge(birthDate);
+               if (date && month) {
+                    const currentYear = new Date().getFullYear();
 
-                    yourBirth.innerHTML = `<i>Your date of birth: ${date}.${month}.${year} <br/> Your age: ${age} years</i>`;
+                    if (year < 1870 || year > currentYear) {
+                         yourBirth.innerHTML = '<h6 style="color:red;">Invalid birth year. Please enter a year between 1870 and the current year.<h6>';
+                    } else {
+                         const birthDate = `${year}-${month}-${date}`; // Format: YYYY-MM-DD
+                         const age = calculateAge(birthDate);
+
+                         yourBirth.innerHTML = `<i>Your date of birth: ${date}.${month}.${year} <br/> Your age: ${age} years</i>`;
+                    }
                } else {
-                    yourBirth.innerHTML = "Please select a complete date";
+                    yourBirth.innerHTML = "Please select a complete date.";
                }
+
           }
 
           monthsSelect.addEventListener('change', () => {
